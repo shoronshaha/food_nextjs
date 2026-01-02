@@ -81,18 +81,19 @@ export default function RelatedProducts({
   // Show placeholder until section is visible
   if (!isVisible) {
     return (
-      <section ref={sectionRef}>
-        <div className="py-2 text-3xl text-center mb-4">
-          <div className="inline-flex gap-2 items-center">
-            <p className="text-gray-500 dark:text-white">
-              RELATED<span className="text-gray-700 dark:text-white font-medium">PRODUCTS</span>
-            </p>
-            <p className="w-8 sm:w-12 h-0.5 bg-gray-700 dark:bg-white"></p>
-          </div>
+      <section ref={sectionRef} className="py-10">
+        <div className="flex items-center justify-center gap-4 mb-8">
+            <div className="h-[1px] w-12 bg-gradient-to-r from-transparent to-orange-500/50"></div>
+            <h2 className="text-2xl md:text-3xl font-bold text-transparent bg-clip-text bg-gradient-to-r from-gray-900 via-orange-600 to-gray-900 dark:from-white dark:via-orange-400 dark:to-white font-urbanist tracking-wide">
+                RECOMMENDED DISHES
+            </h2>
+            <div className="h-[1px] w-12 bg-gradient-to-l from-transparent to-orange-500/50"></div>
         </div>
-        <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-2 md:gap-10 opacity-30">
+        <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4 md:gap-8">
           {Array.from({ length: 4 }).map((_, idx) => (
-            <div key={idx} className="bg-gray-100 dark:bg-gray-800 rounded-lg h-64 animate-pulse" />
+            <div key={idx} className="bg-white/40 dark:bg-white/5 backdrop-blur-sm border border-white/20 rounded-2xl h-[350px] animate-pulse relative overflow-hidden">
+                <div className="absolute inset-0 bg-gradient-to-tr from-transparent via-white/10 to-transparent skew-x-12"></div>
+            </div>
           ))}
         </div>
       </section>
@@ -102,14 +103,16 @@ export default function RelatedProducts({
   if (related.length === 0) return null;
 
   return (
-    <section ref={sectionRef}>
-      <div className="py-2 text-3xl text-center mb-4">
-        <div className="inline-flex gap-2 items-center">
-          <p className="text-gray-500 dark:text-white">
-            RELATED<span className="text-gray-700 dark:text-white font-medium">PRODUCTS</span>
-          </p>
-          <p className="w-8 sm:w-12 h-0.5 bg-gray-700 dark:bg-white"></p>
-        </div>
+    <section ref={sectionRef} className="py-10 relative">
+      {/* Decorative background element */}
+      <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[120%] h-full bg-orange-500/5 blur-[100px] -z-10 rounded-full pointer-events-none"></div>
+      
+      <div className="flex items-center justify-center gap-4 mb-10">
+        <div className="h-[1px] w-16 bg-gradient-to-r from-transparent to-orange-500"></div>
+        <h2 className="text-2xl md:text-3xl font-extrabold text-transparent bg-clip-text bg-gradient-to-r from-gray-900 via-orange-600 to-gray-900 dark:from-white dark:via-orange-400 dark:to-white font-urbanist tracking-wider uppercase">
+            Recommended Dishes
+        </h2>
+        <div className="h-[1px] w-16 bg-gradient-to-l from-transparent to-orange-500"></div>
       </div>
       <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-2 md:gap-10 animate-in fade-in duration-500">
         {related.slice(0, 4).map((product: Product, idx: number) => (

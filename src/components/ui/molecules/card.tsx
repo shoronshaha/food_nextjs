@@ -2,7 +2,7 @@ import { HTMLAttributes, forwardRef } from 'react';
 import { twMerge } from 'tailwind-merge';
 
 interface CardProps extends HTMLAttributes<HTMLDivElement> {
-  variant?: 'default' | 'elevated' | 'outline' | 'filled';
+  variant?: 'default' | 'elevated' | 'outline' | 'filled' | 'glass';
   size?: 'default' | 'sm' | 'lg';
 }
 
@@ -16,6 +16,7 @@ const Card = forwardRef<HTMLDivElement, CardProps>(
       elevated: 'shadow-md',
       outline: 'border border-gray-200 dark:border-gray-700',
       filled: 'bg-gray-50 dark:bg-gray-800',
+      glass: 'bg-white/70 dark:bg-black/60 backdrop-blur-md border border-white/20 shadow-xl',
     };
 
     const sizeClasses = {

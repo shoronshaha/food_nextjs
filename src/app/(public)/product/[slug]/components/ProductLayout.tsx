@@ -48,7 +48,8 @@ export function ProductLayout({
     setActiveTab,
 }: ProductLayoutProps) {
     return (
-        <div className="container max-w-7xl mx-auto md:mt-16 md:pb-0 pb-16">
+        <div className="container max-w-7xl mx-auto md:mt-16 md:pb-0 pb-16 relative">
+            <div className="absolute inset-0 bg-[radial-gradient(circle_at_center,_var(--tw-gradient-stops))] from-orange-100/20 via-transparent to-transparent pointer-events-none -z-10 blur-3xl" />
             <div className="flex flex-row">
                 <article className="relative grid grid-cols-1 lg:grid-cols-12 md:gap-10 items-start w-full">
                     <div className={`lg:col-span-7 ${allMedia.length >= 4 ? "" : "lg:sticky md:top-24 md:self-start md:h-fit"}`}>

@@ -191,10 +191,10 @@ export default function FilterContent({
     const style = sectionStyles[id as keyof typeof sectionStyles] || sectionStyles.default;
 
     return (
-      <div className={`mb-4 rounded-xl overflow-hidden border border-gray-200 dark:border-gray-700 bg-secondary dark:bg-secondary hover:shadow-lg transition-all duration-300 ${isOpen ? 'shadow-lg' : 'shadow-sm'}`}>
+      <div className={`mb-4 rounded-xl overflow-hidden border border-white/20 shadow-sm transition-all duration-300 ${isOpen ? 'bg-white/40 dark:bg-white/5' : 'bg-transparent'}`}>
         <button
           onClick={() => toggleAccordion(id)}
-          className={`w-full flex items-center justify-between px-2 py-2 text-left bg-secondary dark:bg-secondary hover:brightness-95 dark:hover:brightness-110 transition-all duration-200`}
+          className={`w-full flex items-center justify-between px-3 py-2 text-left hover:bg-white/30 dark:hover:bg-white/10 transition-all duration-200`}
         >
           <div className="flex items-center gap-3">
             <div className="flex flex-col items-start">
@@ -345,7 +345,7 @@ export default function FilterContent({
         <aside className="mt-14 hidden md:block w-50">
           <div className="sticky top-24">
             {/* Enhanced Desktop Filter Panel */}
-            <div className="rounded-2xl bg-secondary dark:bg-secondary border border-gray-200 dark:border-gray-700 shadow-xl">
+            <div className="rounded-2xl bg-white/70 dark:bg-black/60 backdrop-blur-md border border-white/20 shadow-xl overflow-hidden">
               {/* Header */}
               <div className="p-3 border-b border-gray-200 dark:border-gray-700">
                 <div className="flex items-center justify-between">
@@ -380,7 +380,7 @@ export default function FilterContent({
                     <label className="flex items-center gap-3 p-2 hover:bg-orange-50 dark:hover:bg-gray-700 rounded-lg cursor-pointer transition-all">
                       <input
                         type="checkbox"
-                        className="w-4 h-4 accent-orange-600 rounded"
+                        className="w-4 h-4 accent-orange-600 rounded bg-transparent border-gray-300"
                         checked={selectedCats.length === 0}
                         onChange={(e) => {
                           e.preventDefault();

@@ -181,10 +181,10 @@ export default function MobileFilterModal({
                 className="absolute inset-0 bg-black/50 backdrop-blur-sm"
                 onClick={() => setIsMobileFiltersOpen(false)}
             />
-            <div className="absolute inset-0 bg-secondary dark:bg-secondary shadow-2xl border-4 border-orange-500 animate-in slide-in-from-right duration-300">
+            <div className="absolute inset-0 bg-white/80 dark:bg-black/80 backdrop-blur-xl shadow-2xl border-l border-white/20 animate-in slide-in-from-right duration-300">
                 <div className="flex flex-col h-full">
                     {/* Header */}
-                    <div className="flex items-center justify-between p-5 border-b border-gray-200 dark:border-gray-700 bg-secondary dark:bg-secondary">
+                    <div className="flex items-center justify-between p-5 border-b border-gray-200/50 dark:border-gray-700/50 bg-transparent">
                         <div className="flex items-center gap-3">
                             <BiFilterAlt className="text-orange-600 dark:text-orange-400" size={24} />
                             <h2 className="text-xl font-bold text-gray-900 dark:text-white font-urbanist">Menu Preferences</h2>

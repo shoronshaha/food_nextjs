@@ -161,10 +161,10 @@ export default function RecentlyViewedProducts({ currentProductId }: RecentlyVie
                 </p>
             </div>
 
-            {/* Enhanced Swiper Container */}
-            <div className="relative group">
+            {/* Glass Background for Swiper Area */}
+            <div className="relative group p-4 rounded-3xl bg-white/30 dark:bg-white/5 backdrop-blur-sm border border-white/20 shadow-inner">
                 {/* Background Glow Effect */}
-                <div className="absolute inset-0 bg-gradient-to-r from-red-500/5 via-transparent to-red-500/5 rounded-3xl blur-xl opacity-0 group-hover:opacity-100 transition-opacity duration-500"></div>
+                <div className="absolute inset-0 bg-gradient-to-r from-orange-500/5 via-transparent to-orange-500/5 rounded-3xl blur-xl opacity-0 group-hover:opacity-100 transition-opacity duration-500 pointer-events-none"></div>
 
                 {/* Enhanced Swiper Slider */}
                 <Swiper
@@ -204,36 +204,32 @@ export default function RecentlyViewedProducts({ currentProductId }: RecentlyVie
                         clickable: true,
                         dynamicBullets: true,
                         renderBullet: (index, className) => {
-                            return `<span class="${className} w-2 h-2 bg-red-400 rounded-full transition-all duration-300 hover:bg-red-600"></span>`;
+                            return `<span class="${className} w-2 h-2 bg-orange-400 rounded-full transition-all duration-300 hover:bg-orange-600"></span>`;
                         },
                     }}
                     className="!pb-12 animate-fade-in-up animation-delay-500"
                     style={{
-                        '--swiper-navigation-color': '#ef4444',
-                        '--swiper-pagination-color': '#ef4444',
+                        '--swiper-navigation-color': '#ea580c',
+                        '--swiper-pagination-color': '#ea580c',
                     } as React.CSSProperties}
                 >
                     {viewedProducts.map((product: Product, index) => (
-                        <SwiperSlide key={product._id} className="group">
-
-
+                        <SwiperSlide key={product._id} className="group pt-2 pb-2 pl-1 pr-1">
                             <ProductCard product={product} />
-
-
                         </SwiperSlide>
                     ))}
                 </Swiper>
 
-                {/* Custom Navigation Buttons */}
-                <button className="custom-prev absolute left-2 top-1/3 -translate-y-1/2 z-10 w-10 h-10 bg-white/90 dark:bg-gray-800/90 backdrop-blur-sm rounded-full shadow-lg hover:shadow-xl transition-all duration-300 hover:scale-110 hover:bg-white dark:hover:bg-gray-700 group/btn opacity-0 group-hover:opacity-100">
-                    <svg className="w-5 h-5 text-gray-700 dark:text-gray-300 mx-auto transition-transform group-hover/btn:-translate-x-0.5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                        <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M15 19l-7-7 7-7" />
+                {/* Custom Navigation Buttons with Glass Effect */}
+                <button className="custom-prev absolute left-0 top-1/2 -translate-y-1/2 -translate-x-1/2 z-20 w-12 h-12 flex items-center justify-center bg-white/80 dark:bg-black/60 backdrop-blur-md rounded-full shadow-lg border border-white/20 text-gray-800 dark:text-white transition-all duration-300 hover:scale-110 hover:bg-orange-500 hover:text-white hover:border-orange-500 disabled:opacity-50 disabled:cursor-not-allowed group/btn opacity-0 group-hover:opacity-100">
+                    <svg className="w-6 h-6 transition-transform group-hover/btn:-translate-x-0.5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2.5} d="M15 19l-7-7 7-7" />
                     </svg>
                 </button>
 
-                <button className="custom-next absolute right-2 top-1/3 -translate-y-1/2 z-10 w-10 h-10 bg-white/90 dark:bg-gray-800/90 backdrop-blur-sm rounded-full shadow-lg hover:shadow-xl transition-all duration-300 hover:scale-110 hover:bg-white dark:hover:bg-gray-700 group/btn opacity-0 group-hover:opacity-100">
-                    <svg className="w-5 h-5 text-gray-700 dark:text-gray-300 mx-auto transition-transform group-hover/btn:translate-x-0.5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                        <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 5l7 7-7 7" />
+                <button className="custom-next absolute right-0 top-1/2 -translate-y-1/2 translate-x-1/2 z-20 w-12 h-12 flex items-center justify-center bg-white/80 dark:bg-black/60 backdrop-blur-md rounded-full shadow-lg border border-white/20 text-gray-800 dark:text-white transition-all duration-300 hover:scale-110 hover:bg-orange-500 hover:text-white hover:border-orange-500 disabled:opacity-50 disabled:cursor-not-allowed group/btn opacity-0 group-hover:opacity-100">
+                    <svg className="w-6 h-6 transition-transform group-hover/btn:translate-x-0.5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2.5} d="M9 5l7 7-7 7" />
                     </svg>
                 </button>
             </div>

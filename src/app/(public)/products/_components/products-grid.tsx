@@ -48,12 +48,15 @@ export default function ShopProductsGrid({
                     ))}
                 </div>
             ) : (
-                <div className="py-16 text-center text-gray-600 dark:text-white font-urbanist">
-                    <p className="text-xl font-bold mb-2">No dishes found matching your taste.</p>
-                    <p className="text-sm">Try adjusting your filters or search.</p>
+                <div className="py-20 text-center text-gray-600 dark:text-white font-urbanist rounded-2xl bg-white/40 dark:bg-black/40 backdrop-blur-sm border border-white/10 mx-4">
+                    <div className="w-20 h-20 bg-orange-100 dark:bg-orange-900/30 rounded-full flex items-center justify-center mx-auto mb-6">
+                        <span className="text-4xl">🍽️</span>
+                    </div>
+                    <p className="text-2xl font-bold mb-3 text-gray-800 dark:text-white">No dishes found matching your taste.</p>
+                    <p className="text-base text-gray-500 dark:text-gray-400 max-w-md mx-auto">It seems we don't have exactly what you're looking for right now. Try adjusting your filters or search.</p>
                     <button
                         onClick={clearAllFilters}
-                        className="mt-6 px-6 py-2 bg-orange-500 text-white rounded-full font-bold hover:bg-orange-600 transition-colors"
+                        className="mt-8 px-8 py-3 bg-gradient-to-r from-orange-500 to-red-600 text-white rounded-full font-bold shadow-lg hover:shadow-orange-500/25 hover:scale-105 transition-all duration-300"
                     >
                         View Full Menu
                     </button>

@@ -50,25 +50,25 @@ export default function ShopDesktopHeader({
       </div>
 
 
-    {/* Desktop Header */}
+      {/* Desktop Header */}
       {!isMobile && (
-        <div className="mb-2 md:mt-4 lg:mt-16 hidden md:flex items-center justify-between gap-4 px-2 font-urbanist">
+        <div className="mb-2 md:mt-4 lg:mt-16 hidden md:flex items-center justify-between gap-4 px-4 py-3 rounded-2xl bg-white/70 dark:bg-black/60 backdrop-blur-md border border-white/20 shadow-lg font-urbanist">
 
           {/* Left: Title */}
           <div className="inline-flex gap-2 items-center">
-            <p className="text-gray-500 dark:text-white">
-              OUR <span className="text-orange-600 font-bold dark:text-orange-500">MENU</span>
+            <p className="text-gray-500 dark:text-white font-bold tracking-wide">
+              OUR <span className="text-orange-600 dark:text-orange-500">MENU</span>
             </p>
-            <p className="w-8 sm:w-12 h-0.5 bg-orange-600"></p>
+            <p className="w-8 sm:w-12 h-1 bg-gradient-to-r from-orange-600 to-yellow-500 rounded-full"></p>
           </div>
 
           {/* Center: Search bar for large screens only (≥1156px) */}
-          <div className="flex-1 relative hidden xl:flex">
+          <div className="flex-1 relative hidden xl:flex mx-8">
             <input
               value={search}
               onChange={(e) => setSearch(e.target.value)}
               placeholder="Search for delicious dishes..."
-              className="w-full h-10 pl-5 pr-12 rounded-full bg-white dark:bg-gray-600 text-black dark:text-white border border-primary/40 focus:outline-none focus:ring-2 focus:ring-primary shadow-sm"
+              className="w-full h-10 pl-5 pr-12 rounded-full bg-white/50 dark:bg-gray-800/50 text-black dark:text-white border border-gray-200 dark:border-gray-700/50 focus:outline-none focus:ring-2 focus:ring-primary/50 backdrop-blur-sm transition-all shadow-inner"
             />
             <AiOutlineSearch
               className="absolute right-4 top-1/2 -translate-y-1/2 text-orange-500 pointer-events-none"
@@ -77,8 +77,8 @@ export default function ShopDesktopHeader({
           </div>
 
           {/* Right: Sort */}
-          <div className="flex items-center gap-2 bg-white dark:bg-gray-700 p-2 rounded-full border border-gray-200 dark:border-gray-600 shadow-sm">
-            <label htmlFor="sort" className="text-sm font-semibold text-gray-600 dark:text-white pl-2">
+          <div className="flex items-center gap-2 bg-white/50 dark:bg-gray-800/50 px-3 py-1.5 rounded-full border border-gray-200/50 dark:border-gray-700/50 shadow-sm backdrop-blur-sm hover:bg-white/80 dark:hover:bg-gray-800/80 transition-all">
+            <label htmlFor="sort" className="text-xs font-bold text-gray-500 dark:text-gray-400 uppercase tracking-wider">
               Sort by:
             </label>
             <select
@@ -87,7 +87,7 @@ export default function ShopDesktopHeader({
               onChange={(e) =>
                 setSortBy(e.target.value as "name" | "price-low" | "price-high" | "newest")
               }
-              className="border-none bg-transparent text-black dark:text-white text-sm font-medium focus:ring-0 cursor-pointer text-orange-600 dark:text-orange-400"
+              className="border-none bg-transparent text-sm font-bold focus:ring-0 cursor-pointer text-orange-600 dark:text-orange-400 py-0 pl-1 pr-6"
             >
               <option value="newest">Freshly Added</option>
               <option value="price-low">Price: Low to High</option>

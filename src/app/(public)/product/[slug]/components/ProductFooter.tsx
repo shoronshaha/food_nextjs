@@ -45,22 +45,22 @@ export function ProductFooter({
             )}
 
             <div className="flex items-center gap-1">
-                <div className="fixed bottom-0 left-0 right-0  backdrop-blur-lg border-t shadow-xl lg:hidden z-50">
-                    <div className="flex items-center justify-between p-1 gap-2 bg-white dark:bg-black">
+                <div className="fixed bottom-0 left-0 right-0 backdrop-blur-xl border-t border-white/20 shadow-[0_-4px_20px_rgba(0,0,0,0.1)] lg:hidden z-50 bg-white/80 dark:bg-black/80">
+                    <div className="flex items-center justify-between p-2 gap-3 bg-transparent">
                         {!isPreOrder && (
-                            <div className="pl-2">
+                            <div className="pl-1">
                                 <button
                                     onClick={onWishlistToggle}
                                     aria-label={isWishlisted ? "Remove from wishlist" : "Add to wishlist"}
-                                    className={`p-1 rounded-md border ${isWishlisted ? "text-red-500 border-red-400 bg-red-50" : "text-gray-500 border-gray-300 bg-white"}`}
+                                    className={`p-2.5 rounded-full border transition-all duration-300 ${isWishlisted ? "text-red-500 border-red-200 bg-red-50" : "text-gray-400 border-gray-200 dark:border-gray-700 bg-transparent hover:bg-gray-50 dark:hover:bg-gray-800"}`}
                                 >
-                                    <FiHeart size={20} fill={isWishlisted ? "#ef4444" : "none"} />
+                                    <FiHeart size={22} fill={isWishlisted ? "#ef4444" : "none"} />
                                 </button>
                             </div>
                         )}
                         <Button
                             title={buttonTitle}
-                            className={isPreOrder ? "bg-primary dark:bg-primary w-full h-12 flex-1" : "flex-1"}
+                            className={`flex-1 shadow-lg hover:shadow-xl hover:scale-[1.02] transition-all duration-300 h-12 text-base font-bold rounded-full ${isPreOrder ? "bg-gradient-to-r from-orange-500 to-red-600" : ""}`}
                             variant={isPreOrder ? "default" : "custom"}
                             onClick={onAddToCart}
                             size="md"
@@ -68,7 +68,7 @@ export function ProductFooter({
                             {buttonText}
                         </Button>
                         {!isPreOrder && cartItems.length > 0 && (
-                            <div className="max-w-8 bg-primary p-1 rounded-full aspect-square pr-4">
+                            <div className="max-w-10 bg-gradient-to-tr from-orange-500 to-red-500 p-0.5 rounded-full aspect-square shadow-lg animate-in zoom-in duration-300">
                                 <CartSheet />
                             </div>
                         )}
