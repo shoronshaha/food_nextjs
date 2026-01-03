@@ -1,8 +1,8 @@
 // components/shop-all-products/category-tree.tsx
 "use client";
-import React, { useState, useCallback, useEffect } from "react";
 import { Category } from "@/types/business";
 import { Product } from "@/types/product";
+import React, { useCallback, useEffect, useState } from "react";
 import { FiChevronDown, FiChevronRight } from "react-icons/fi";
 
 // Define FilterCategory to match API response
@@ -21,7 +21,6 @@ interface CategoryTreeProps {
   apiCategories?: FilterCategory[];
 }
 
-
 /* ───────────────────────── helpers ───────────────────────── */
 function getAllDescendantIds(cat: Category): string[] {
   let ids: string[] = [cat._id];
@@ -34,7 +33,10 @@ function getAllDescendantIds(cat: Category): string[] {
 }
 
 // Recursive function to find category by _id in hierarchical structure
-function findCategoryById(categories: FilterCategory[], id: string): FilterCategory | undefined {
+function findCategoryById(
+  categories: FilterCategory[],
+  id: string
+): FilterCategory | undefined {
   for (const cat of categories) {
     if (cat._id === id) return cat;
     if (cat.children && cat.children.length > 0) {
@@ -44,7 +46,6 @@ function findCategoryById(categories: FilterCategory[], id: string): FilterCateg
   }
   return undefined;
 }
-
 
 function getCategorySelectionState(
   cat: Category,
@@ -119,9 +120,10 @@ export default function CategoryTree({
               {hasChildren && (
                 <button
                   onClick={() => toggleCategoryExpand(cat._id)}
-                  className="mr-2 p-1 text-gray-500 hover:text-gray-700 dark:hover:text-gray-300 transition-colors rounded hover:bg-gray-100 dark:hover:bg-gray-700"
-                  aria-label={`${isExpanded ? "Collapse" : "Expand"} ${cat.name
-                    }`}
+                  className="mr-2 p-1 text-gray-500 hover:text-gray-700 dark:hover:text-gray-300 transition-colors rounded hover:bg-white/5 dark:hover:bg-gray-700"
+                  aria-label={`${isExpanded ? "Collapse" : "Expand"} ${
+                    cat.name
+                  }`}
                 >
                   {isExpanded ? (
                     <FiChevronDown className="w-3 h-3" />
@@ -130,10 +132,11 @@ export default function CategoryTree({
                   )}
                 </button>
               )}
-              <label className="flex items-center flex-grow px-2 hover:bg-orange-50 dark:hover:bg-gray-700/50 rounded cursor-pointer transition-colors">
+              <label className="flex items-center flex-grow px-2 hover:bg-secondary/60 dark:hover:bg-gray-700/50 rounded cursor-pointer transition-colors">
                 <input
                   type="checkbox"
-                  className="accent-orange-600 w-3 h-3 rounded"
+                  style={{ accentColor: "var(--color-primary)" }}
+                  className="w-3 h-3 rounded"
                   checked={selectionState === "all"}
                   ref={(input) => {
                     if (input)
@@ -145,7 +148,7 @@ export default function CategoryTree({
                   }}
                   aria-label={`Filter by ${cat.name}`}
                 />
-                <span className="ml-3 text-gray-700 dark:text-white text-sm font-medium group-hover:text-gray-900 dark:group-hover:text-gray-100 transition-colors">
+                <span className="ml-3 text-foreground dark:text-white text-sm font-medium transition-colors">
                   {cat.name}
                 </span>
                 <span className="ml-auto text-xs text-gray-500 dark:text-gray-400">

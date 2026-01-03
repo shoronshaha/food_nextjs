@@ -1,21 +1,21 @@
 // pages/CheckoutPage.tsx
 "use client";
-import React, { useEffect, useMemo, useState } from "react";
-import { useRouter } from "next/navigation";
-import { toast } from "sonner";
 import { Button } from "@/components/ui/atoms/button";
 import { useBusiness } from "@/hooks/useBusiness";
 import { useCart } from "@/hooks/useCart";
 import { usePreorderCart } from "@/hooks/usePreorderCart";
+import { useRouter } from "next/navigation";
+import React, { useEffect, useMemo, useState } from "react";
+import { toast } from "sonner";
 
 import type { TCartItem } from "@/lib/features/cart/cartSlice";
 import { formatCurrency } from "@/utils/formatCurrency";
 import { trackBeginCheckout, trackPurchase } from "@/utils/gtm";
-import DeliveryInfoForm from "./_components/DeliveryInfoForm";
 import { CartSummary } from "./_components/CartSummary";
+import DeliveryInfoForm from "./_components/DeliveryInfoForm";
 
-import { normalizePhone } from "@/utils/normalizePhone";
 import { useCreateOnlineOrderWithSSLMutation } from "@/lib/api/publicApi";
+import { normalizePhone } from "@/utils/normalizePhone";
 
 interface OnlineOrderResponse {
   status: number;
@@ -56,8 +56,15 @@ export default function CheckoutPage() {
   const router = useRouter();
   const { businessData } = useBusiness();
   const { items, clearCart, removeItem, updateItemQuantity } = useCart();
-  const { item: preorderItem, clearCart: clearPreorderCart, updateItemQuantity: updatePreorderQuantity, itemCount, subtotal: preorderSubtotal } = usePreorderCart();
-  const [createOnlineOrder, { isLoading: isOrderLoading }] = useCreateOnlineOrderWithSSLMutation();
+  const {
+    item: preorderItem,
+    clearCart: clearPreorderCart,
+    updateItemQuantity: updatePreorderQuantity,
+    itemCount,
+    subtotal: preorderSubtotal,
+  } = usePreorderCart();
+  const [createOnlineOrder, { isLoading: isOrderLoading }] =
+    useCreateOnlineOrderWithSSLMutation();
 
   const [formData, setFormData] = useState<FormData>({
     name: "",
@@ -80,7 +87,10 @@ export default function CheckoutPage() {
 
   // Determine available payment methods (পুরানো লজিক)
   const availablePaymentMethods = useMemo<PaymentMethod[]>(() => {
-    if (businessData?.ssl_commerz?.account_id && businessData?.ssl_commerz?.isActive_SSLCommerz) {
+    if (
+      businessData?.ssl_commerz?.account_id &&
+      businessData?.ssl_commerz?.isActive_SSLCommerz
+    ) {
       if (businessData.ssl_commerz.payment_methods.length > 0) {
         return businessData.ssl_commerz.payment_methods;
       }
@@ -103,7 +113,11 @@ export default function CheckoutPage() {
   // Delivery charge calculation (পুরানো লজিক)
   const deliveryCharge = useMemo(() => {
     if (!businessData) return 0;
-    if (businessData?.defaultCourier === null || businessData?.defaultCourier === "office-delivery") return 0;
+    if (
+      businessData?.defaultCourier === null ||
+      businessData?.defaultCourier === "office-delivery"
+    )
+      return 0;
     switch (formData.delivery_area) {
       case "inside_dhaka":
         return businessData.insideDhaka;
@@ -119,10 +133,12 @@ export default function CheckoutPage() {
   // Preorder logic (নতুন থেকে রাখব)
   const isPreorderCheckout = !!(preorderItem && itemCount > 0);
   const displayItems = isPreorderCheckout ? [preorderItem] : items;
-  const currentSubtotal = isPreorderCheckout ? preorderSubtotal : items.reduce(
-    (sum: number, item: TCartItem) => sum + item.price * item.quantity,
-    0
-  );
+  const currentSubtotal = isPreorderCheckout
+    ? preorderSubtotal
+    : items.reduce(
+        (sum: number, item: TCartItem) => sum + item.price * item.quantity,
+        0
+      );
 
   const total = useMemo(
     () => currentSubtotal + deliveryCharge - additional_discount_amount,
@@ -135,7 +151,6 @@ export default function CheckoutPage() {
       toast.warning("Your cart is empty!", {
         description: "Add some items to your cart first",
       });
-
     }
     trackBeginCheckout(displayItems, total);
   }, [items, total, router, isPreorderCheckout, displayItems, currentSubtotal]);
@@ -195,7 +210,9 @@ export default function CheckoutPage() {
   };
 
   const handleChange = (
-    e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement | HTMLSelectElement>
+    e: React.ChangeEvent<
+      HTMLInputElement | HTMLTextAreaElement | HTMLSelectElement
+    >
   ) => {
     const { name, value } = e.target;
     // Normalize phone number for the phone field
@@ -205,7 +222,6 @@ export default function CheckoutPage() {
     if (formErrors[name as keyof typeof formErrors]) {
       setFormErrors((prev) => ({ ...prev, [name]: "" }));
     }
-
   };
 
   const handlePaymentMethodChange = (method: string) => {
@@ -220,15 +236,23 @@ export default function CheckoutPage() {
     }
   };
 
-  const handlePreorderUpdateQuantity = (id: string, variantId: string | undefined, quantity: number) => {
+  const handlePreorderUpdateQuantity = (
+    id: string,
+    variantId: string | undefined,
+    quantity: number
+  ) => {
     if (isPreorderCheckout && preorderItem) {
       updatePreorderQuantity(quantity);
       toast.success(`প্রি-অর্ডার কোয়ান্টিটি ${quantity}-এ আপডেট হয়েছে`);
     }
   };
 
-  const currentRemoveItem = isPreorderCheckout ? handlePreorderRemoveItem : removeItem;
-  const currentUpdateItemQuantity = isPreorderCheckout ? handlePreorderUpdateQuantity : updateItemQuantity;
+  const currentRemoveItem = isPreorderCheckout
+    ? handlePreorderRemoveItem
+    : removeItem;
+  const currentUpdateItemQuantity = isPreorderCheckout
+    ? handlePreorderUpdateQuantity
+    : updateItemQuantity;
 
   // Payment method mapping (পুরানো লজিক)
   const getBackendPaymentMethod = (frontendMethod: string) => {
@@ -247,9 +271,9 @@ export default function CheckoutPage() {
     const products = isPreorderCheckout
       ? [{ productId: preorderItem._id, quantity: preorderItem.quantity }]
       : items.map((item: TCartItem) => ({
-        productId: item._id,
-        quantity: item.quantity,
-      }));
+          productId: item._id,
+          quantity: item.quantity,
+        }));
 
     return {
       customer_name: formData.name,
@@ -258,7 +282,8 @@ export default function CheckoutPage() {
       delivery_area: formData.delivery_area,
       customer_note: formData.note || undefined,
       products,
-      additional_discount_type: additional_discount_amount > 0 ? "fixed" : undefined,
+      additional_discount_type:
+        additional_discount_amount > 0 ? "fixed" : undefined,
       additional_discount_amount:
         additional_discount_amount > 0
           ? additional_discount_amount.toString()
@@ -279,7 +304,7 @@ export default function CheckoutPage() {
 
       window.scrollTo({
         top: offsetTop - scrollOffset,
-        behavior: 'smooth'
+        behavior: "smooth",
       });
 
       // Focus the field after scrolling
@@ -301,7 +326,9 @@ export default function CheckoutPage() {
       return;
     }
 
-    const backendPaymentMethod = getBackendPaymentMethod(formData.paymentMethod);
+    const backendPaymentMethod = getBackendPaymentMethod(
+      formData.paymentMethod
+    );
 
     if (!backendPaymentMethod) {
       toast.error("অবৈধ পেমেন্ট পদ্ধতি");
@@ -317,7 +344,10 @@ export default function CheckoutPage() {
         const backendOrderId = response.data?._id;
 
         // Save to session storage
-        sessionStorage.setItem(`orderId-${orderId}`, JSON.stringify(displayItems) || "");
+        sessionStorage.setItem(
+          `orderId-${orderId}`,
+          JSON.stringify(displayItems) || ""
+        );
 
         // Clear carts
         clearCart();
@@ -358,8 +388,14 @@ export default function CheckoutPage() {
             encodeURIComponent(formData.address)
           );
           successUrl.searchParams.set("total", total.toString());
-          successUrl.searchParams.set("deliveryCharge", deliveryCharge.toString());
-          successUrl.searchParams.set("itemCount", displayItems.length.toString());
+          successUrl.searchParams.set(
+            "deliveryCharge",
+            deliveryCharge.toString()
+          );
+          successUrl.searchParams.set(
+            "itemCount",
+            displayItems.length.toString()
+          );
           successUrl.searchParams.set("paymentMethod", "cashOnDelivery");
           successUrl.searchParams.set(
             "additionalDiscount",
@@ -371,8 +407,14 @@ export default function CheckoutPage() {
               `itemName${index}`,
               encodeURIComponent(item.name)
             );
-            successUrl.searchParams.set(`itemPrice${index}`, item.price.toString());
-            successUrl.searchParams.set(`itemQty${index}`, item.quantity.toString());
+            successUrl.searchParams.set(
+              `itemPrice${index}`,
+              item.price.toString()
+            );
+            successUrl.searchParams.set(
+              `itemQty${index}`,
+              item.quantity.toString()
+            );
           });
 
           window.location.href = successUrl.toString();
@@ -410,14 +452,29 @@ export default function CheckoutPage() {
       <div className="px-1 pb-24 md:mt-20 lg:pb-16 bg-primary/5 dark:bg-gray-800 ">
         <div className=" grid grid-cols-1 lg:grid-cols-12 gap-4 lg:gap-6 ">
           <section className="lg:col-span-6 space-y-4 flex flex-col order-1 lg:order-2">
-            <div className="rounded-xl overflow-hidden shadow-sm border bg-white dark:bg-gray-900 border-primary/15 dark:border-gray-800 flex-1">
+            <div className="rounded-xl overflow-hidden shadow-sm border bg-white dark:bg-gray-900 border-secondary/10 dark:border-gray-800 flex-1">
               <div className="p-1 lg:p-5">
                 <DeliveryInfoForm
                   formData={formData}
                   formErrors={formErrors}
-                  insideFee={businessData?.defaultCourier === null || businessData?.defaultCourier === "office-delivery" ? 0 : businessData?.insideDhaka || 0}
-                  subDhakaFee={businessData?.defaultCourier === null || businessData?.defaultCourier === "office-delivery" ? 0 : businessData?.subDhaka || 0}
-                  outsideFee={businessData?.defaultCourier === null || businessData?.defaultCourier === "office-delivery" ? 0 : businessData?.outsideDhaka || 0}
+                  insideFee={
+                    businessData?.defaultCourier === null ||
+                    businessData?.defaultCourier === "office-delivery"
+                      ? 0
+                      : businessData?.insideDhaka || 0
+                  }
+                  subDhakaFee={
+                    businessData?.defaultCourier === null ||
+                    businessData?.defaultCourier === "office-delivery"
+                      ? 0
+                      : businessData?.subDhaka || 0
+                  }
+                  outsideFee={
+                    businessData?.defaultCourier === null ||
+                    businessData?.defaultCourier === "office-delivery"
+                      ? 0
+                      : businessData?.outsideDhaka || 0
+                  }
                   isLoading={isOrderLoading}
                   handleChange={handleChange}
                   handlePaymentMethodChange={handlePaymentMethodChange}
@@ -426,13 +483,22 @@ export default function CheckoutPage() {
                   availablePaymentMethods={availablePaymentMethods}
                 />
               </div>
-
             </div>
           </section>
           <section className="lg:col-span-6 flex flex-col order-2">
-            <div className="rounded-xl overflow-hidden shadow-sm border border-primary/15 dark:border-gray-700 bg-white dark:bg-gray-900 flex-1">
+            <div className="rounded-xl overflow-hidden shadow-sm border border-secondary/10 dark:border-gray-700 bg-white dark:bg-gray-900 flex-1">
               <div className="bg-primary px-4 py-3">
-                <h2 className="text-[15px] font-semibold text-white">Shopping Items</h2>
+                <h2 className="text-[15px] font-semibold text-white">
+                  Shopping Items
+                </h2>
+                <div className="mt-2 flex gap-2">
+                  <div className="inline-flex items-center gap-2 px-3 py-1 bg-primary/20 rounded-full text-white/90 text-sm">
+                    ✅ Secure Payment
+                  </div>
+                  <div className="inline-flex items-center gap-2 px-3 py-1 bg-primary/20 rounded-full text-white/90 text-sm">
+                    🚚 Fast Delivery
+                  </div>
+                </div>
               </div>
               <div className="lg:p-4 p-1">
                 <CartSummary
@@ -449,15 +515,15 @@ export default function CheckoutPage() {
               </div>
             </div>
           </section>
-
-
         </div>
       </div>
 
       <form onSubmit={handleSubmit}>
         <div className="fixed bottom-0 left-0 right-0 lg:hidden bg-white dark:bg-gray-900 shadow-2xl border-t px-4 py-4 z-[60]">
           <div className="pb-3">
-            <h2 className="text-lg font-semibold text-black dark:text-white">Cart Total</h2>
+            <h2 className="text-lg font-semibold text-black dark:text-white">
+              Cart Total
+            </h2>
             <div className="w-full">
               <div className="flex flex-col gap-1 sm:gap-2 sm:mt-2 text-sm">
                 <div className="flex justify-between text-black dark:text-white">
@@ -473,12 +539,17 @@ export default function CheckoutPage() {
                 {additional_discount_amount > 0 && (
                   <div className="flex justify-between text-black dark:text-white">
                     <p>বিকাশ ডিসকাউন্ট</p>
-                    <p>[&minus;] {formatCurrency(additional_discount_amount, currency)}</p>
+                    <p>
+                      [&minus;]{" "}
+                      {formatCurrency(additional_discount_amount, currency)}
+                    </p>
                   </div>
                 )}
                 {additional_discount_amount > 0 && <hr />}
                 <div className="flex justify-between text-black dark:text-white">
-                  <p><strong>টোটাল বিল</strong></p>
+                  <p>
+                    <strong>টোটাল বিল</strong>
+                  </p>
                   <p className="font-bold">{formatCurrency(total, currency)}</p>
                 </div>
               </div>
@@ -489,6 +560,7 @@ export default function CheckoutPage() {
             type="submit"
             disabled={isOrderLoading}
             variant="custom"
+            className="bg-primary text-white w-full"
           >
             {isOrderLoading ? (
               <div className="flex items-center justify-center">

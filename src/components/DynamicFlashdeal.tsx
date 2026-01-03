@@ -1,24 +1,24 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
-'use client';
+"use client";
 
-import React, { useEffect, useMemo, useState, useRef } from 'react';
-import { useRouter } from 'next/navigation';
-import { Swiper, SwiperSlide } from 'swiper/react';
-import { Navigation, Autoplay } from 'swiper/modules';
-import 'swiper/css';
-import 'swiper/css/navigation';
-import 'swiper/css/pagination';
-import { Product } from '@/types/product';
-import ProductCard from '@/components/ui/organisms/product-card';
-import { HiOutlineChevronLeft, HiOutlineChevronRight } from 'react-icons/hi2';
-import { FlashDealTimeCounter } from './ui/atoms/FlashDealTimeCounter';
-import FlashDealsSkeleton from './ui/skeleton/FlashDealsSkeleton';
+import ProductCard from "@/components/ui/organisms/product-card";
+import { Product } from "@/types/product";
+import { useRouter } from "next/navigation";
+import { useEffect, useMemo, useRef, useState } from "react";
+import { HiOutlineChevronLeft, HiOutlineChevronRight } from "react-icons/hi2";
+import "swiper/css";
+import "swiper/css/navigation";
+import "swiper/css/pagination";
+import { Autoplay, Navigation } from "swiper/modules";
+import { Swiper, SwiperSlide } from "swiper/react";
+import { FlashDealTimeCounter } from "./ui/atoms/FlashDealTimeCounter";
+import FlashDealsSkeleton from "./ui/skeleton/FlashDealsSkeleton";
 
 /* -------------------------------------------------------------------------- */
 /*  Helpers                                                                   */
 /* -------------------------------------------------------------------------- */
 const getCategoryName = (p: Product) =>
-  p.sub_category?.[0]?.name ?? 'Uncategorised';
+  p.sub_category?.[0]?.name ?? "Uncategorised";
 
 const toNumber = (v: string | number | undefined | null) =>
   v === undefined || v === null ? 0 : Number(v);
@@ -28,7 +28,7 @@ interface FlashDealsProps {
 }
 
 // Loading states
-type LoadingState = 'idle' | 'loading' | 'succeeded' | 'failed';
+type LoadingState = "idle" | "loading" | "succeeded" | "failed";
 
 interface LoadingStateData {
   state: LoadingState;
@@ -41,7 +41,7 @@ function FlashDeals({ initialProducts }: FlashDealsProps) {
 
   /* ───────── State ───────── */
   const [state, setState] = useState<LoadingStateData>({
-    state: 'idle',
+    state: "idle",
     data: null,
     error: null,
   });
@@ -55,7 +55,7 @@ function FlashDeals({ initialProducts }: FlashDealsProps) {
   /* ───────── Initialize loading ───────── */
   useEffect(() => {
     if (initialProducts && initialProducts.length > 0) {
-      setState({ state: 'succeeded', data: initialProducts, error: null });
+      setState({ state: "succeeded", data: initialProducts, error: null });
     }
   }, [initialProducts]);
 
@@ -67,23 +67,25 @@ function FlashDeals({ initialProducts }: FlashDealsProps) {
 
     const now = Date.now();
 
-    return state.data.filter((p) => {
-      const v = p.variantsId?.[0];
-      const end = v?.discount_end_date;
-      const start = v?.discount_start_date;
-      const discountPercent = toNumber(v?.discount_percent);
+    return state.data
+      .filter((p) => {
+        const v = p.variantsId?.[0];
+        const end = v?.discount_end_date;
+        const start = v?.discount_start_date;
+        const discountPercent = toNumber(v?.discount_percent);
 
-      if (!end || discountPercent <= 0) return false;
+        if (!end || discountPercent <= 0) return false;
 
-      const endTime = new Date(end).getTime();
-      const startTime = start ? new Date(start).getTime() : 0;
+        const endTime = new Date(end).getTime();
+        const startTime = start ? new Date(start).getTime() : 0;
 
-      return now >= startTime && now <= endTime;
-    }).sort((a, b) => {
-      const da = toNumber(a.variantsId?.[0]?.discount_percent);
-      const db = toNumber(b.variantsId?.[0]?.discount_percent);
-      return db - da;
-    });
+        return now >= startTime && now <= endTime;
+      })
+      .sort((a, b) => {
+        const da = toNumber(a.variantsId?.[0]?.discount_percent);
+        const db = toNumber(b.variantsId?.[0]?.discount_percent);
+        return db - da;
+      });
   }, [state.data]);
 
   const updateNav = () => {
@@ -94,7 +96,7 @@ function FlashDeals({ initialProducts }: FlashDealsProps) {
   useEffect(updateNav, [swiper, deals]);
 
   /* ───────── JSX ───────── */
-  if (state.state === 'failed') {
+  if (state.state === "failed") {
     return (
       <div className="max-w-7xl mx-auto px-2 md:px-6 py-2 md:mt-24 text-center">
         <div className="py-16">
@@ -107,7 +109,7 @@ function FlashDeals({ initialProducts }: FlashDealsProps) {
     );
   }
 
-  if (state.state === 'loading' || state.data === null) {
+  if (state.state === "loading" || state.data === null) {
     return <FlashDealsSkeleton />;
   }
 
@@ -123,14 +125,14 @@ function FlashDeals({ initialProducts }: FlashDealsProps) {
             <div className="col-span-12 relative md:px-4 sm:px-0 px-2">
               <h2 className="text-2xl md:text-3xl lg:text-4xl font-bold text-primary dark:text-gray-100 flex items-center justify-between font-urbanist">
                 <span className="flex items-center gap-2">
-                   <span className="text-3xl">🔥</span> Today's Specials
+                  <span className="text-3xl">🔥</span> Today's Specials
                 </span>
                 {/* Custom Swiper Nav Buttons */}
                 <div className="flex gap-1 ml-4 items-center">
                   {showNav.prev && (
                     <div
                       ref={prevRef}
-                      className="p-2 rounded-full bg-white dark:bg-gray-700 shadow hover:bg-orange-50 transition cursor-pointer"
+                      className="p-2 rounded-full bg-white dark:bg-gray-700 shadow hover:bg-secondary/10 transition cursor-pointer"
                     >
                       <HiOutlineChevronLeft className="h-5 w-5 text-gray-700 dark:text-white" />
                     </div>
@@ -138,15 +140,15 @@ function FlashDeals({ initialProducts }: FlashDealsProps) {
                   {showNav.next && (
                     <div
                       ref={nextRef}
-                      className="p-2 rounded-full bg-white dark:bg-gray-700 shadow hover:bg-orange-50 transition cursor-pointer"
+                      className="p-2 rounded-full bg-white dark:bg-gray-700 shadow hover:bg-secondary/10 transition cursor-pointer"
                     >
                       <HiOutlineChevronRight className="h-5 w-5 text-gray-700 dark:text-white" />
                     </div>
                   )}
 
                   <button
-                    onClick={() => router.push('/flashdeals')}
-                    className="ml-2 px-4 py-2 text-sm font-bold bg-orange-100 text-orange-700 rounded-full hover:bg-orange-200 transition"
+                    onClick={() => router.push("/flashdeals")}
+                    className="ml-2 px-4 py-2 text-sm font-bold bg-secondary/10 text-primary rounded-full hover:bg-secondary/20 transition"
                   >
                     View All
                   </button>
@@ -180,7 +182,11 @@ function FlashDeals({ initialProducts }: FlashDealsProps) {
                     <SwiperSlide key={deal._id} className="relative">
                       <div className="transform transition-transform relative">
                         <div className="flex absolute bottom-1/3 left-1/2 transform -translate-x-1/2 -translate-y-1/3 items-center justify-center z-10">
-                          <FlashDealTimeCounter endDate={deal.variantsId?.[0]?.discount_end_date ?? ''} />
+                          <FlashDealTimeCounter
+                            endDate={
+                              deal.variantsId?.[0]?.discount_end_date ?? ""
+                            }
+                          />
                         </div>
                         <ProductCard product={deal} isAboveFold={false} />
                       </div>

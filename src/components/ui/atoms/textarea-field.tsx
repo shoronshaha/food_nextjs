@@ -4,7 +4,8 @@ import { IconType } from "react-icons";
 import { twMerge } from "tailwind-merge";
 import { FormFieldWrapper } from "../molecules/FormFieldWrapper";
 
-export interface TextareaFieldProps extends React.TextareaHTMLAttributes<HTMLTextAreaElement> {
+export interface TextareaFieldProps
+  extends React.TextareaHTMLAttributes<HTMLTextAreaElement> {
   id: string;
   label?: string;
   value?: string;
@@ -48,9 +49,9 @@ export const TextareaField = ({
       preserveErrorSpace={preserveErrorSpace}
       className={className}
     >
-      <div className='relative'>
+      <div className="relative">
         {icon && (
-          <div className='absolute left-3 top-3 text-gray-400 dark:text-gray-500'>
+          <div className="absolute left-3 top-3 text-gray-400 dark:text-gray-500">
             {React.createElement(icon, { className: "w-4 h-4" })}
           </div>
         )}
@@ -66,7 +67,7 @@ export const TextareaField = ({
             "disabled:bg-gray-50 dark:disabled:bg-gray-800/50 disabled:opacity-75",
             error
               ? "border-red-500 focus:ring-red-200 dark:focus:ring-red-500/30"
-              : "border-gray-300 dark:border-gray-600 hover:border-orange-400 dark:hover:border-orange-400 focus:ring-orange-200 dark:focus:ring-orange-400",
+              : "border-gray-300 dark:border-gray-600 hover:border-primary dark:hover:border-primary focus:ring-primary dark:focus:ring-primary",
             icon ? "pl-10" : "pl-3",
             rightElement ? "pr-10" : "pr-3",
             inputClassName
@@ -74,9 +75,11 @@ export const TextareaField = ({
           maxLength={maxLength}
           {...props}
         />
-        {rightElement && <div className='absolute right-3 top-3'>{rightElement}</div>}
+        {rightElement && (
+          <div className="absolute right-3 top-3">{rightElement}</div>
+        )}
         {(showCharacterCount || maxLength) && (
-          <div className='absolute right-3 bottom-3 flex justify-end mt-1 text-xs text-gray-500 dark:text-gray-400'>
+          <div className="absolute right-3 bottom-3 flex justify-end mt-1 text-xs text-gray-500 dark:text-gray-400">
             Count: {value.length}
             {maxLength && `/${maxLength}`}
           </div>

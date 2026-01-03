@@ -4,7 +4,8 @@ import { IconType } from "react-icons";
 import { twMerge } from "tailwind-merge";
 import { FormFieldWrapper } from "../molecules/FormFieldWrapper";
 
-export interface InputFieldProps extends React.InputHTMLAttributes<HTMLInputElement> {
+export interface InputFieldProps
+  extends React.InputHTMLAttributes<HTMLInputElement> {
   id: string;
   label?: string;
   value?: string | number;
@@ -49,7 +50,7 @@ export const InputField = ({
       preserveErrorSpace={preserveErrorSpace}
       className={className}
     >
-      <div className='relative'>
+      <div className="relative">
         {icon && (
           <div
             className={twMerge(
@@ -80,14 +81,18 @@ export const InputField = ({
               ? "border-red-500 focus:ring-red-200 dark:focus:ring-red-500/30"
               : warning
               ? "border-yellow-500 focus:ring-yellow-200 dark:focus:ring-yellow-500/30"
-              : "border-gray-300 dark:border-gray-600 hover:border-orange-400 dark:hover:border-orange-400 focus:ring-orange-200 dark:focus:ring-orange-400",
+              : "border-gray-300 dark:border-gray-600 hover:border-primary dark:hover:border-primary focus:ring-primary dark:focus:ring-primary",
             icon ? "pl-10" : "pl-3",
             rightElement ? "pr-10" : "pr-3",
             inputClassName
           )}
           {...props}
         />
-        {rightElement && <div className='absolute right-1 top-1/2 transform -translate-y-1/2'>{rightElement}</div>}
+        {rightElement && (
+          <div className="absolute right-1 top-1/2 transform -translate-y-1/2">
+            {rightElement}
+          </div>
+        )}
       </div>
     </FormFieldWrapper>
   );

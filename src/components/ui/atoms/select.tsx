@@ -34,7 +34,10 @@ interface SelectProps {
   showError?: boolean;
   dropdownIndicator?: React.ComponentType<{ className?: string }>;
   clearAllConfirmation?: string;
-  noOptionsMessage?: string | React.ReactNode | ((searchTerm: string) => React.ReactNode);
+  noOptionsMessage?:
+    | string
+    | React.ReactNode
+    | ((searchTerm: string) => React.ReactNode);
   searchPlaceholder?: string;
   showSelectAll?: boolean;
   selectAllLabel?: string;
@@ -88,13 +91,19 @@ const Select: React.FC<SelectProps> = ({
   // Track if dropdown height has been measured
   const [dropdownHeight, setDropdownHeight] = useState<number | null>(null);
 
-  const filteredOptions = options.filter((option) => option.label.toLowerCase().includes(searchTerm.toLowerCase()));
+  const filteredOptions = options.filter((option) =>
+    option.label.toLowerCase().includes(searchTerm.toLowerCase())
+  );
   const enabledOptions = filteredOptions.filter((option) => !option.disabled);
 
-  const isSelected = useCallback((option: Option) => value.some((v) => v.value === option.value), [value]);
+  const isSelected = useCallback(
+    (option: Option) => value.some((v) => v.value === option.value),
+    [value]
+  );
 
   const isAllSelected = useCallback(
-    () => enabledOptions.length > 0 && enabledOptions.every((o) => isSelected(o)),
+    () =>
+      enabledOptions.length > 0 && enabledOptions.every((o) => isSelected(o)),
     [enabledOptions, isSelected]
   );
 
@@ -122,10 +131,22 @@ const Select: React.FC<SelectProps> = ({
       maxHeights[dropdownSize]
     );
     return totalHeight;
-  }, [filteredOptions.length, searchable, searchPosition, showSelectAll, mode, dropdownSize]);
+  }, [
+    filteredOptions.length,
+    searchable,
+    searchPosition,
+    showSelectAll,
+    mode,
+    dropdownSize,
+  ]);
 
   const calculateBestPlacement = useCallback(() => {
-    if (!containerRef.current || (menuPlacement !== "auto" && menuPlacement !== "top" && menuPlacement !== "bottom")) {
+    if (
+      !containerRef.current ||
+      (menuPlacement !== "auto" &&
+        menuPlacement !== "top" &&
+        menuPlacement !== "bottom")
+    ) {
       return menuPlacement;
     }
 
@@ -226,8 +247,16 @@ const Select: React.FC<SelectProps> = ({
         };
 
         // Adjust if dropdown goes beyond screen height
-        if (position.top + (dropdownRef.current?.offsetHeight || calculateDropdownHeight()) > viewportHeight) {
-          position.top = Math.max(0, viewportHeight - (dropdownRef.current?.offsetHeight || calculateDropdownHeight()));
+        if (
+          position.top +
+            (dropdownRef.current?.offsetHeight || calculateDropdownHeight()) >
+          viewportHeight
+        ) {
+          position.top = Math.max(
+            0,
+            viewportHeight -
+              (dropdownRef.current?.offsetHeight || calculateDropdownHeight())
+          );
         }
         break;
 
@@ -241,8 +270,16 @@ const Select: React.FC<SelectProps> = ({
         };
 
         // Adjust if dropdown goes beyond screen height
-        if (position.top + (dropdownRef.current?.offsetHeight || calculateDropdownHeight()) > viewportHeight) {
-          position.top = Math.max(0, viewportHeight - (dropdownRef.current?.offsetHeight || calculateDropdownHeight()));
+        if (
+          position.top +
+            (dropdownRef.current?.offsetHeight || calculateDropdownHeight()) >
+          viewportHeight
+        ) {
+          position.top = Math.max(
+            0,
+            viewportHeight -
+              (dropdownRef.current?.offsetHeight || calculateDropdownHeight())
+          );
         }
         break;
     }
@@ -258,7 +295,11 @@ const Select: React.FC<SelectProps> = ({
 
   const handleToggle = (e?: React.MouseEvent) => {
     if (disabled) return;
-    if (e && searchPosition === "trigger" && inputRef.current?.contains(e.target as Node)) {
+    if (
+      e &&
+      searchPosition === "trigger" &&
+      inputRef.current?.contains(e.target as Node)
+    ) {
       return;
     }
     if (!isOpen) {
@@ -273,7 +314,9 @@ const Select: React.FC<SelectProps> = ({
     if (!disabled && !option.disabled) {
       if (mode === "multi") {
         const exists = value.find((v) => v.value === option.value);
-        const newSelections = exists ? value.filter((v) => v.value !== option.value) : [...value, option];
+        const newSelections = exists
+          ? value.filter((v) => v.value !== option.value)
+          : [...value, option];
         onChange(newSelections);
       } else {
         onChange([option]);
@@ -301,7 +344,9 @@ const Select: React.FC<SelectProps> = ({
     if (isAllSelected()) {
       onChange([]);
     } else {
-      const selectableOptions = enabledOptions.filter((option) => !option.disabled);
+      const selectableOptions = enabledOptions.filter(
+        (option) => !option.disabled
+      );
       onChange(selectableOptions);
     }
   };
@@ -396,7 +441,7 @@ const Select: React.FC<SelectProps> = ({
       labelRightElement={labelRightElement}
       preserveErrorSpace={preserveErrorSpace}
     >
-      <div className='relative' ref={containerRef}>
+      <div className="relative" ref={containerRef}>
         {/* Trigger */}
         <div
           id={id}
@@ -404,27 +449,27 @@ const Select: React.FC<SelectProps> = ({
           className={twMerge(
             "w-full flex items-center p-2 h-10 rounded border bg-white dark:bg-gray-800 text-gray-900 dark:text-white",
             "cursor-pointer select-none",
-            "border-gray-300 dark:border-gray-600 hover:border-orange-400 dark:hover:border-orange-400 focus:outline-none",
-            isOpen && "ring-2 ring-orange-200 dark:ring-orange-600",
+            "border-gray-300 dark:border-gray-600 hover:border-primary dark:hover:border-primary focus:outline-none",
+            isOpen && "ring-2 ring-primary/30 dark:ring-primary",
             error && "border-red-500",
             disabled && "opacity-50 cursor-not-allowed",
             className
           )}
         >
-          <div className='flex-1 flex flex-wrap gap-1 overflow-hidden'>
+          <div className="flex-1 flex flex-wrap gap-1 overflow-hidden">
             {searchable && searchPosition === "trigger" ? (
-              <div className='flex gap-1 w-full'>
+              <div className="flex gap-1 w-full">
                 {mode === "multi" && value.length > 0 && (
-                  <div className='flex overflow-x-scroll gap-1 max-w-2/3 scrollbar-none'>
+                  <div className="flex overflow-x-scroll gap-1 max-w-2/3 scrollbar-none">
                     {value.map((v) => (
                       <span
                         key={v.value}
-                        className='inline-flex items-center px-2 py-0.5 bg-orange-50 text-orange-700 text-xs rounded text-nowrap'
+                        className="inline-flex items-center px-2 py-0.5 bg-secondary/10 text-primary text-xs rounded text-nowrap"
                       >
                         {v.label}
                         {!disabled && (
                           <FiX
-                            className='ml-1 w-3 h-3 cursor-pointer'
+                            className="ml-1 w-3 h-3 cursor-pointer"
                             onClick={(e) => {
                               e.stopPropagation();
                               handleRemove(v);
@@ -437,7 +482,7 @@ const Select: React.FC<SelectProps> = ({
                 )}
                 <input
                   ref={inputRef}
-                  type='text'
+                  type="text"
                   value={searchTerm}
                   placeholder={value.length === 0 ? placeholder : ""}
                   onChange={(e) => {
@@ -445,7 +490,7 @@ const Select: React.FC<SelectProps> = ({
                     if (!isOpen) openDropdown();
                   }}
                   onFocus={openDropdown}
-                  className='flex-1 min-w-[50px] bg-transparent outline-none text-sm placeholder-gray-400'
+                  className="flex-1 min-w-[50px] bg-transparent outline-none text-sm placeholder-gray-400"
                   onClick={(e) => e.stopPropagation()}
                 />
               </div>
@@ -453,12 +498,12 @@ const Select: React.FC<SelectProps> = ({
               value.map((v) => (
                 <span
                   key={v.value}
-                  className='inline-flex items-center px-2 py-0.5 bg-orange-50 text-orange-700 text-xs rounded'
+                  className="inline-flex items-center px-2 py-0.5 bg-secondary/10 text-primary text-xs rounded"
                 >
                   {v.label}
                   {!disabled && (
                     <FiX
-                      className='ml-1 w-3 h-3 cursor-pointer'
+                      className="ml-1 w-3 h-3 cursor-pointer"
                       onClick={(e) => {
                         e.stopPropagation();
                         handleRemove(v);
@@ -468,16 +513,19 @@ const Select: React.FC<SelectProps> = ({
                 </span>
               ))
             ) : mode === "single" && value.length > 0 ? (
-              <span className=''>{value[0].label}</span>
+              <span className="">{value[0].label}</span>
             ) : (
-              <span className='text-gray-400 truncate'>{placeholder}</span>
+              <span className="text-gray-400 truncate">{placeholder}</span>
             )}
           </div>
 
           {mode === "multi" && value.length > 0 && !disabled && (
-            <FiX className='ml-2 w-4 h-4 text-gray-400 hover:text-red-500 cursor-pointer' onClick={handleClearAll} />
+            <FiX
+              className="ml-2 w-4 h-4 text-gray-400 hover:text-red-500 cursor-pointer"
+              onClick={handleClearAll}
+            />
           )}
-          <DropdownIndicator className='ml-2 w-4 h-4 text-gray-400' />
+          <DropdownIndicator className="ml-2 w-4 h-4 text-gray-400" />
         </div>
 
         {/* Dropdown */}
@@ -498,7 +546,7 @@ const Select: React.FC<SelectProps> = ({
                 bottom: dropdownPosition.bottom,
                 width: dropdownPosition.width,
               }}
-              role='listbox'
+              role="listbox"
               onAnimationEnd={() => {
                 // Update position after animation completes
                 if (dropdownRef.current && !dropdownHeight) {
@@ -508,14 +556,14 @@ const Select: React.FC<SelectProps> = ({
               }}
             >
               {searchable && searchPosition === "dropdown" && (
-                <div className='p-2 border-b dark:border-gray-600'>
+                <div className="p-2 border-b dark:border-gray-600">
                   <input
                     ref={inputRef}
-                    type='text'
+                    type="text"
                     value={searchTerm}
                     placeholder={searchPlaceholder}
                     onChange={(e) => setSearchTerm(e.target.value)}
-                    className='w-full h-8 px-2 rounded border border-gray-300  dark:border-gray-600 focus:ring-2 focus:ring-orange-300 dark:focus:ring-orange-600'
+                    className="w-full h-8 px-2 rounded border border-gray-300  dark:border-gray-600 focus:ring-2 focus:ring-primary dark:focus:ring-primary"
                     autoFocus
                   />
                 </div>
@@ -523,7 +571,7 @@ const Select: React.FC<SelectProps> = ({
               {showSelectAll && mode === "multi" && (
                 <div
                   onClick={handleSelectAll}
-                  className='px-3 py-2 cursor-pointer hover:bg-gray-100 dark:hover:bg-gray-700'
+                  className="px-3 py-2 cursor-pointer hover:bg-gray-100 dark:hover:bg-gray-700"
                 >
                   {isAllSelected() ? "Deselect All" : selectAllLabel}
                 </div>
@@ -536,22 +584,26 @@ const Select: React.FC<SelectProps> = ({
                     className={twMerge(
                       "px-3 py-2 cursor-pointer flex items-center text-nowrap",
                       isSelected(option)
-                        ? "bg-orange-100 dark:bg-orange-700 text-orange-700 dark:text-white"
+                        ? "bg-secondary/10 dark:bg-secondary-700 text-primary dark:text-white"
                         : "hover:bg-gray-100 dark:hover:bg-gray-700",
                       option.disabled && "opacity-50 cursor-not-allowed"
                     )}
                   >
                     {mode === "multi" && (
-                      <div className='w-4 h-4 mr-2 flex items-center justify-center border border-gray-300 dark:border-gray-500 rounded'>
-                        {isSelected(option) && <FiCheck className='w-3 h-3 text-orange-600' />}
+                      <div className="w-4 h-4 mr-2 flex items-center justify-center border border-gray-300 dark:border-gray-500 rounded">
+                        {isSelected(option) && (
+                          <FiCheck className="w-3 h-3 text-primary" />
+                        )}
                       </div>
                     )}
                     {option.label}
                   </div>
                 ))
               ) : (
-                <div className='px-2 py-2 text-gray-400'>
-                  {typeof noOptionsMessage === "function" ? noOptionsMessage(searchTerm) : noOptionsMessage}
+                <div className="px-2 py-2 text-gray-400">
+                  {typeof noOptionsMessage === "function"
+                    ? noOptionsMessage(searchTerm)
+                    : noOptionsMessage}
                 </div>
               )}
             </div>,

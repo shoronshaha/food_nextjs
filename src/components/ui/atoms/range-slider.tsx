@@ -28,10 +28,10 @@ export const RangeSlider = ({
   className,
 }: RangeSliderProps) => (
   <FormFieldWrapper id={id} label={label} error={error} className={className}>
-    <div className='flex items-center space-x-4'>
+    <div className="flex items-center space-x-4">
       <input
         id={id}
-        type='range'
+        type="range"
         value={value}
         min={min}
         max={max}
@@ -40,11 +40,13 @@ export const RangeSlider = ({
         disabled={disabled}
         className={twMerge(
           "w-full h-2 rounded-lg appearance-none cursor-pointer",
-          error ? "bg-red-200 accent-red-600" : "bg-gray-200 accent-orange-600",
+          error ? "bg-red-200 accent-red-600" : "bg-gray-200 accent-primary",
           disabled && "cursor-not-allowed opacity-50"
         )}
       />
-      <span className='text-sm font-medium text-gray-700 dark:text-gray-300 min-w-[3ch] text-right'>{value}</span>
+      <span className="text-sm font-medium text-gray-700 dark:text-gray-300 min-w-[3ch] text-right">
+        {value}
+      </span>
     </div>
   </FormFieldWrapper>
 );

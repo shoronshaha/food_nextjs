@@ -37,7 +37,7 @@ export const RadioButton = React.forwardRef<HTMLInputElement, RadioButtonProps>(
       <div className={twMerge("flex items-center gap-2", className)}>
         <input
           ref={ref}
-          type='radio'
+          type="radio"
           id={id}
           name={name}
           value={value}
@@ -48,7 +48,7 @@ export const RadioButton = React.forwardRef<HTMLInputElement, RadioButtonProps>(
             "h-4 w-4 rounded-full border-2 transition-colors focus:ring-2 focus:ring-offset-0 focus:outline-none",
             error
               ? "border-red-500 text-red-600 focus:ring-red-200"
-              : "border-gray-300 text-orange-600 focus:ring-orange-200",
+              : "border-gray-300 text-primary focus:ring-primary",
             disabled && "cursor-not-allowed opacity-50",
             inputClassName
           )}

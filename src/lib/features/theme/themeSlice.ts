@@ -1,7 +1,7 @@
 import { createSlice, PayloadAction } from "@reduxjs/toolkit";
 
 type ThemeMode = "light" | "dark";
-type ThemeColor = "toolbox" | "red" | "green" | "blue" | "sage" | "orange";
+type ThemeColor = "toolbox" | "red" | "green" | "blue" | "sage" | "warm";
 
 type ThemeState = {
   mode: ThemeMode;
